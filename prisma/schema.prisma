@@ -20,7 +20,7 @@ model Author {
   updatedAt   DateTime   @updatedAt
   name        String
   gender      String
-  books       Book[]
+  books       BooksOnAuthors[]
   bankAccounts BankAccount[]
   pseudonym Pseudonym?
 }
@@ -31,7 +31,17 @@ model Book {
   updatedAt   DateTime   @updatedAt
 
   title    String
-  authors Author[]
+  authors BooksOnAuthors[]
+}
+
+model BooksOnAuthors {
+  book       Book     @relation(fields: [bookId], references: [id])
+  bookId     Int
+  author   Author @relation(fields: [authorId], references: [id])
+  authorId Int
+  createdAt   DateTime   @default(now())
+
+  @@id([bookId, authorId])
 }
 
 model BankAccount {

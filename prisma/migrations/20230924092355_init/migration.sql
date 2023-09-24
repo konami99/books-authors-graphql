@@ -20,6 +20,15 @@ CREATE TABLE "Book" (
 );
 
 -- CreateTable
+CREATE TABLE "BooksOnAuthors" (
+    "bookId" INTEGER NOT NULL,
+    "authorId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "BooksOnAuthors_pkey" PRIMARY KEY ("bookId","authorId")
+);
+
+-- CreateTable
 CREATE TABLE "BankAccount" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -41,29 +50,17 @@ CREATE TABLE "Pseudonym" (
     CONSTRAINT "Pseudonym_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "_AuthorToBook" (
-    "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
-);
-
 -- CreateIndex
 CREATE UNIQUE INDEX "Pseudonym_authorId_key" ON "Pseudonym"("authorId");
 
--- CreateIndex
-CREATE UNIQUE INDEX "_AuthorToBook_AB_unique" ON "_AuthorToBook"("A", "B");
+-- AddForeignKey
+ALTER TABLE "BooksOnAuthors" ADD CONSTRAINT "BooksOnAuthors_bookId_fkey" FOREIGN KEY ("bookId") REFERENCES "Book"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- CreateIndex
-CREATE INDEX "_AuthorToBook_B_index" ON "_AuthorToBook"("B");
+-- AddForeignKey
+ALTER TABLE "BooksOnAuthors" ADD CONSTRAINT "BooksOnAuthors_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "Author"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "BankAccount" ADD CONSTRAINT "BankAccount_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "Author"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Pseudonym" ADD CONSTRAINT "Pseudonym_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "Author"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_AuthorToBook" ADD CONSTRAINT "_AuthorToBook_A_fkey" FOREIGN KEY ("A") REFERENCES "Author"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_AuthorToBook" ADD CONSTRAINT "_AuthorToBook_B_fkey" FOREIGN KEY ("B") REFERENCES "Book"("id") ON DELETE CASCADE ON UPDATE CASCADE;
