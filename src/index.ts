@@ -11,6 +11,7 @@ const app = async () => {
   const schema = await tq.buildSchema({
     resolvers,
     emitSchemaFile: true,
+    validate: false,
   })
 
   const context = () => {
