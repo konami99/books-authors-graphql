@@ -8,7 +8,10 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 const app = async () => {
-  const schema = await tq.buildSchema({ resolvers })
+  const schema = await tq.buildSchema({
+    resolvers,
+    emitSchemaFile: true,
+  })
 
   const context = () => {
     return {
